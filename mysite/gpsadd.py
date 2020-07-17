@@ -7,9 +7,9 @@ from police.models import Crime, Case
 import googlemaps
 
 
-APIKEY = 'AIzaSyCjoD7pepMRf4kU5ubWvpAMO_2os3VLAK8' #google maps apikey
-CLIENTID = '502544939589-difhk70em8dlbvmd5q9rgfg7e4jrfqkc.apps.googleusercontent.com'
-CLIENTSECRET = 'fcHxu2RjAzvTNEDZcFXuH5-S'
+APIKEY = '??' #google maps apikey
+CLIENTID = '??.apps.googleusercontent.com'
+CLIENTSECRET = '??-S'
 GOOGLEURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=' + APIKEY
 #geolocator = Nominatim(user_agent="normanpolicegps")
 #geocode = RateLimiter(geolocator.geocode, min_delay_seconds=5)
