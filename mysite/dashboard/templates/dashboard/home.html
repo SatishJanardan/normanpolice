@@ -1,0 +1,16 @@
+{% extends "dashboard/base.html" %}
+{% block content %}
+  {% for titlei, ploti in mylist %}
+    <div class="media content-section">
+      <div class="media-body">
+        <h5 class="mt-0">{{ titlei }}</h5>
+        {% autoescape off %}
+        {{ ploti }}
+        {% endautoescape %}
+      </div>
+    </div>
+  {% endfor %}
+  <div class="form-group">
+    <a class="btn btn-outline-info mb-4" href="{% url 'dashboard-mymaps' %}">Maps</a>
+  </div>
+{% endblock content %}

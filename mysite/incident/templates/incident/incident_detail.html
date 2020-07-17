@@ -1,0 +1,30 @@
+{% extends "incident/base.html" %}
+{% block content %}   
+  <article class="media content-section">
+    <div class="media-body">
+      <table class="mr-2">
+        <tr class="table-headers">
+          <th>Date/Time</th>
+          <th>Incident Number</th>
+          <th>Location</th>
+          <th>Nature Numberr</th>
+          <th>Incident ORI</th>
+          <th>Update</th>
+          <th>Delete</th>
+        </tr>
+        <tr class="crime-list">
+          <td>{{ object.crimeDate|date:"F j, Y  T" }}</td>
+          <td>{{ object.crimeNumber }}</td>
+          <td>{{ object.crimeLocation }}</td>
+          <td>{{ object.crimeCatNum }}</td>
+          <td>{{ object.crimeORI }}</td>
+        	<td>
+	        	<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'crime-update' object.id %}">Update</a>
+          </td><td>
+	        	<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'crime-delete' object.id %}">Delete</a>
+	        </td>
+        </tr>
+      </table>
+    </div>
+  </article>
+{% endblock content %}

@@ -1,0 +1,33 @@
+DELETE FROM police_arrest;
+DELETE FROM police_case;
+DELETE FROM police_cat;
+DELETE FROM police_crime;
+DELETE FROM police_filelist;
+DELETE FROM police_offensecat;
+DELETE FROM police_officer;
+
+SELECT * FROM police_arrest LIMIT 10;
+SELECT * FROM police_case LIMIT 10;
+SELECT * FROM police_cat LIMIT 10;
+SELECT * FROM police_crime LIMIT 10;
+SELECT * FROM police_filelist LIMIT 10;
+SELECT * FROM police_offensecat LIMIT 10;
+SELECT * FROM police_officer LIMIT 10;
+
+SELECT * FROM police_crime ORDER BY id DESC LIMIT 10;
+
+SELECT count(*) FROM police_arrest;
+SELECT count(*) FROM police_case;
+SELECT count(*) FROM police_cat;
+SELECT count(*) FROM police_crime;
+SELECT count(*) FROM police_filelist;
+SELECT count(*) FROM police_offensecat;
+SELECT count(*) FROM police_officer;
+
+SELECT * FROM police_arrest LIMIT 100;
+SELECT * FROM police_case LIMIT 100;
+SELECT * FROM police_cat LIMIT 100;
+SELECT * FROM police_crime LIMIT 100;
+SELECT * FROM police_filelist LIMIT 100;
+SELECT * FROM police_offensecat LIMIT 100;
+SELECT * FROM police_officer LIMIT 100;

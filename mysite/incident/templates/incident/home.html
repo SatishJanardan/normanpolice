@@ -1,0 +1,54 @@
+{% extends "incident/base.html" %}
+{% block content %}
+   <div class="media content-section">
+   <div class="table table-striped table-bordered">        
+        <div class="row align-items-start">
+            <div class="col">Date</div>
+            <div class="col">Incident Number</div>
+            <div class="col">Location</div>
+            <div class="col">Incident</div>
+            <div class="col">ORI</div>
+        </div>
+   {% for crime in crimes %}
+
+        <div class="row align-items-center">
+            <div class="col">{{ crime.crimeDate }}</div>
+            <div class="col">{{ crime.crimeNumber }}</div>
+            <div class="col">{{ crime.crimeLocation }}</div>
+            <div class="col">{{ crime.crimeCatId.catName }}</div>
+            <div class="col">{{ crime.crimeORI}}</div>
+        </div>
+
+   {% endfor %}
+        <div class="row align-items-end">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+        </div>
+   </div>
+ </div>
+   {% if is_paginated %}
+
+    {% if page_obj.has_previous %}
+      <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+      <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    {% for num in page_obj.paginator.page_range %}
+      {% if page_obj.number == num %}
+        <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+      {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ num }}" >{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+      <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+      <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+
+   {% endif %}
+
+{% endblock content %}
