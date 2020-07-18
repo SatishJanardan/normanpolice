@@ -232,11 +232,11 @@ def GraphFView(startdate,enddate,startsev,endsev):
 	)
 	traces.append(trace)
 
-	weatherfeed = [('wTempMax','Maximum Temp'),
+	weatherfeed = [('wTempMax','Maximum Temperance'),
 					('wDewMax','Maximum Dew'),
 					('wHumidityMax','Maximum Humidity'),
 					('wWindMax','Maximum Wind'),
-					('wPrecipitation','Precipitation'),
+					('wPressure','Pressure'),
 					('wPrecipitation','Precipitation')]
 
 	timelist = read_frame(Weather.objects.all())
