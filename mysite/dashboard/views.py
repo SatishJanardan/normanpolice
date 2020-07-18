@@ -193,7 +193,7 @@ def GraphEView(startdate,enddate,officerbadge):
 	else:
 		timelist = read_frame(Case.objects.filter(
 			caseDate__range=(startdate,enddate),
-			caseOffenseId__officerBadge__exact=officerbadge
+			caseOfficerId__officerBadge__exact=officerbadge
 			).values('caseOfficerId__officerName').order_by())
 
 	timelisttemp = timelist['caseOfficerId__officerName']
@@ -289,10 +289,79 @@ def GraphGView(startdate,enddate,startsev,endsev):
 
 	return (title, plot_div)
 
-def GraphHView(startdate,enddate,startsev,endsev):
+def GraphHView(startdate,enddate):
+	title = 'Top offenses worked by top five officiers'
+	topofficers = ['Martinez','Jackson','Burk','Allison','Caspers']
+
+	topofficer = topofficers[0]
+	officerbadge = Officer.objects.filter(
+		officerName=topofficer
+		).values('officerId').order_by()[0]['officerId']
+	timelist0 = read_frame(Case.objects.filter(
+		caseDate__range=(startdate,enddate),
+		caseOfficerId__officerId__exact=officerbadge
+		).values('caseOffenseId__offenseCat').order_by())
+
+	topofficer = topofficers[1]
+	officerbadge = Officer.objects.filter(
+		officerName=topofficer
+		).values('officerId').order_by()[0]['officerId']
+	timelist1 = read_frame(Case.objects.filter(
+		caseDate__range=(startdate,enddate),
+		caseOfficerId__officerId__exact=officerbadge
+		).values('caseOffenseId__offenseCat').order_by())
+
+	topofficer = topofficers[2]
+	officerbadge = Officer.objects.filter(
+		officerName=topofficer
+		).values('officerId').order_by()[0]['officerId']
+	timelist2 = read_frame(Case.objects.filter(
+		caseDate__range=(startdate,enddate),
+		caseOfficerId__officerId__exact=officerbadge
+		).values('caseOffenseId__offenseCat').order_by())
+
+	topofficer = topofficers[3]
+	officerbadge = Officer.objects.filter(
+		officerName=topofficer
+		).values('officerId').order_by()[0]['officerId']
+	timelist3 = read_frame(Case.objects.filter(
+		caseDate__range=(startdate,enddate),
+		caseOfficerId__officerId__exact=officerbadge
+		).values('caseOffenseId__offenseCat').order_by())
+
+	topofficer = topofficers[4]
+	officerbadge = Officer.objects.filter(
+		officerName=topofficer
+		).values('officerId').order_by()[0]['officerId']
+	timelist4 = read_frame(Case.objects.filter(
+		caseDate__range=(startdate,enddate),
+		caseOfficerId__officerId__exact=officerbadge
+		).values('caseOffenseId__offenseCat').order_by())
+
+	tlist = [timelist0,timelist1,timelist2,timelist3,timelist4]
+
+	timelist = pd.concat(tlist)
+
+	timelisttemp = timelist['caseOffenseId__offenseCat']
+	x=list(CountFrequency(timelisttemp).items())
+	tltemp = np.array(sorted(x, reverse=True, key=lambda x: x[1]))
+
+	trace = go.Scatter(
+		x=tltemp[0:,0],
+		y=tltemp[0:,1],
+		name='Offense', 
+		mode="lines+markers"
+	)
+	data = go.Data([trace])
+	
+	plot_div = plot(data, output_type='div', show_link=False, include_plotlyjs=False)
+
+	return (title, plot_div)
+
+def GraphIView(startdate,enddate,startsev,endsev):
 	title = 'Heat Map of Incidents'
 
-	startsev=4
+	startsev=3
 	endsev=5
 	timelist = read_frame(Crime.objects.filter(
 		crimeDate__range=(startdate,enddate),
@@ -311,24 +380,37 @@ def GraphHView(startdate,enddate,startsev,endsev):
 	# the following code will create the html file view that in your web browser 
 	gmap.heatmap(latitude_list, longitude_list) 
 
-	gmap.draw( "dashboard/templates/dashboard/mymap.html" )
+	gmap.draw( "dashboard/templates/dashboard/heatmapinc.html" )
 
 	return ('')
 
-def GraphIView(startdate,enddate,severity):
-	title = ''
-	plot_div = []
-	return (title, plot_div)
+def GraphJView(startdate,enddate):
+	title = 'Heat Map of Cases'
 
-def GraphJView(startdate,enddate,severity):
-	title = ''
-	plot_div = []
-	return (title, plot_div)
+	timelist = read_frame(Case.objects.filter(
+		caseDate__range=(startdate,enddate)
+		).values('caseLat','caseLong'))
+
+	latitude_list = timelist['caseLat']
+	longitude_list = timelist['caseLong']
+
+	# center co-ordinates of the map 
+	gmap = gmplot.GoogleMapPlotter( 35.221770,-97.444960,13)
+
+	# plot the co-ordinates on the google map 
+	gmap.scatter( latitude_list, longitude_list, '# FF0000', size = 40, marker = True) 
+
+	# the following code will create the html file view that in your web browser 
+	gmap.heatmap(latitude_list, longitude_list) 
+
+	gmap.draw( "dashboard/templates/dashboard/heatmapcase.html" )
+
+	return ('')
 
 
 def SelectGraphView(request):
 	# declaring template
-	template = "dashboard/graph.html"
+	template = "dashboard/graphinput.html"
 
 	# If this is a POST request then process the Form data
 	if request.method == 'POST':
@@ -342,7 +424,7 @@ def SelectGraphView(request):
 			
 
 			# redirect to a new URL:
-			return HttpResponseRedirect( "dashboard/graph.html" )
+			return HttpResponseRedirect( "dashboard/graphinput.html" )
 
 	# If this is a GET (or any other method) create the default form.
 	else:
@@ -353,7 +435,27 @@ def SelectGraphView(request):
 	context = {
 
 	}
-	return render(request, "dashboard/graph.html", context)
+	return render(request, "dashboard/graphinput.html", context)
+
+def HeatMapIncView(request):
+	# declaring template
+	template = "dashboard/heatmapinc.html"
+
+	#fig.show()
+	context = {
+
+	}
+	return render(request, "dashboard/heatmapinc.html", context)
+
+def HeatMapCaseView(request):
+	# declaring template
+	template = "dashboard/heatmapcase.html"
+
+	#fig.show()
+	context = {
+
+	}
+	return render(request, "dashboard/heatmapcase.html", context)
 
 def home(request):
 	cstzone=pytz.timezone("America/Chicago")  # Time zone of Norman, OK
@@ -403,7 +505,14 @@ def home(request):
 	plots.append(plot_div)
 	plotcnt+=1
 
-	GraphHView(startdate,enddate,startsev,endsev)  #displayed in its own page
+	(title, plot_div) = GraphHView(startdate,enddate)
+	titles.append(title)
+	plots.append(plot_div)
+	plotcnt+=1
+
+	GraphIView(startdate,enddate,startsev,endsev)  #displayed in its own page
+
+	GraphJView(startdate,enddate)  #displayed in its own page
 
 	mylist=zip(titles,plots)
 	context = {

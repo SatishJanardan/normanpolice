@@ -6,10 +6,9 @@ import pyowm
 from police.models import Crime, Case
 import googlemaps
 
-
 APIKEY = '??' #google maps apikey
-CLIENTID = '??.apps.googleusercontent.com'
-CLIENTSECRET = '??-S'
+CLIENTID = '??apps.googleusercontent.com'
+CLIENTSECRET = '??'
 GOOGLEURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=' + APIKEY
 #geolocator = Nominatim(user_agent="normanpolicegps")
 #geocode = RateLimiter(geolocator.geocode, min_delay_seconds=5)
