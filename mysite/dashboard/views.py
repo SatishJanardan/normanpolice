@@ -236,7 +236,52 @@ def GraphFView(startdate,enddate,startsev,endsev):
 					('wDewMax','Maximum Dew'),
 					('wHumidityMax','Maximum Humidity'),
 					('wWindMax','Maximum Wind'),
-					('wPressure','Pressure'),
+					('wPressureMax','Maximum Pressure'),
+					('wPrecipitation','Precipitation')]
+
+	timelist = read_frame(Weather.objects.all())
+	daynum=tltemp[0:,0]
+
+	for (ifield, iline) in weatherfeed:
+		timelisttemp = timelist[ifield]
+		trace = go.Scatter(
+			x=daynum,
+			y=np.array(list(timelisttemp)),
+			name=iline,  
+			mode="lines+markers"
+		)
+		traces.append(trace)
+
+	data = go.Data(traces)
+	
+	plot_div = plot(data, output_type='div', show_link=False, include_plotlyjs=False)
+
+	return (title, plot_div)
+
+def GraphF2View(startdate,enddate):
+	title='Case count vs Weather'
+
+	timelist = read_frame(Case.objects.filter(
+		caseDate__range=(startdate,enddate),
+		).values('caseDate').order_by())
+
+	timelisttemp = sorted(round(((pd.to_datetime(timelist['caseDate']).dt.month-6)*30+pd.to_datetime(timelist['caseDate']).dt.day),0))
+	tltemp = np.array(list(CountFrequency(timelisttemp).items()))
+
+	traces=[]
+	trace = go.Scatter(
+		x=tltemp[0:,0],
+		y=tltemp[0:,1],
+		name='Incidents', 
+		mode="lines+markers"
+	)
+	traces.append(trace)
+
+	weatherfeed = [('wTempMax','Maximum Temperance'),
+					('wDewMax','Maximum Dew'),
+					('wHumidityMax','Maximum Humidity'),
+					('wWindMax','Maximum Wind'),
+					('wPressureMax','Maximum Pressure'),
 					('wPrecipitation','Precipitation')]
 
 	timelist = read_frame(Weather.objects.all())
@@ -496,6 +541,11 @@ def home(request):
 	plotcnt+=1
 
 	(title, plot_div) = GraphFView(startdate,enddate,startsev,endsev)
+	titles.append(title)
+	plots.append(plot_div)
+	plotcnt+=1
+
+	(title, plot_div) = GraphF2View(startdate,enddate)
 	titles.append(title)
 	plots.append(plot_div)
 	plotcnt+=1
