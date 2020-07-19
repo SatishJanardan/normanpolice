@@ -63,5 +63,16 @@ class CaseDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+class CasePostListView(ListView):
+	model = Case
+	template_name = 'case/case_posts.html' # <app>/<model>_<viewtype>.html
+	context_object_name = 'posts'
+	ordering = ['caseDate']
+	paginate_by = 15
+
+	def get_queryset(self):
+		user = get_object_or_404(User, username=self.kwargs.get('username'))
+		return Case.objects.filter(author=user).order_by('caseDate')
+
 def about(request):
    return render(request, 'case/about.html', {'title': 'About'})

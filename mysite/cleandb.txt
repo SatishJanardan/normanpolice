@@ -23,6 +23,10 @@ SELECT count(*) FROM police_crime;
 SELECT count(*) FROM police_filelist;
 SELECT count(*) FROM police_offensecat;
 SELECT count(*) FROM police_officer;
+SELECT count(*) FROM police_session;
+SELECT count(*) FROM police_filelist;
+SELECT count(*) FROM police_weather;
+SELECT count(*) FROM police_profile;
 
 SELECT * FROM police_arrest LIMIT 100;
 SELECT * FROM police_case LIMIT 100;

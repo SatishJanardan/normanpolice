@@ -63,6 +63,16 @@ class CrimeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+class CrimePostListView(ListView):
+	model = Crime
+	template_name = 'incident/crime_posts.html' # <app>/<model>_<viewtype>.html
+	context_object_name = 'posts'
+	ordering = ['crimeDate']
+	paginate_by = 15
+
+	def get_queryset(self):
+		user = get_object_or_404(User, username=self.kwargs.get('username'))
+		return Crime.objects.filter(author=user).order_by('crimeDate')
 
 def about(request):
    return render(request, 'incident/about.html', {'title': 'About'})

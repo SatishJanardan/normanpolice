@@ -10,12 +10,12 @@
             <div class="col">Officer</div>
         </div>
    {% for case in cases %}
-        <div class="row align-items-center">
+        <div class="row align-items-left">
             <div class="col">{{ case.caseDate }}</div>
             <div class="col">{{ case.caseNumber }}</div>
             <div class="col">{{ case.caseLocation }}</div>
-            <div class="col">{{ case.caseOffenseId.offenceCat }}</div>
-            <div class="col">{{ case.caseOfficerId.officerBadge }} - {{ icase.caseOfficerId.officerName}}</div>
+            <div class="col">{{ case.caseOffenseId.offenseCat }}</div>
+            <div class="col">{{ case.caseOfficerId.officerBadge }} - {{ case.caseOfficerId.officerName}}</div>
         </div>
 
    {% endfor %}
