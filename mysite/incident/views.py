@@ -74,5 +74,6 @@ class CrimePostListView(ListView):
 		user = get_object_or_404(User, username=self.kwargs.get('username'))
 		return Crime.objects.filter(author=user).order_by('crimeDate')
 
+
 def about(request):
    return render(request, 'incident/about.html', {'title': 'About'})

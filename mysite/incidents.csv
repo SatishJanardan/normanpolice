@@ -1,4 +1,4 @@
-"crimeDate","crimeNumber","crimeLocation","crimeCatId__catName","crimeCatId__catUrgency","crimeCatId__catSeverity","crimeORI","crimeLat","crimeLong"
+"dt","crimen","location","Event","urgency","severity","ori","lat","long"
 "2020-06-01 05:18:00+00:00","2020-00035994","2154 W BROOKS ST","Disturbance/Domestic",1,"L","OK0140200",35.2075517,-97.4740386
 "2020-06-01 05:21:00+00:00","2020-00035993","217 EMELYN ST","Disturbance/Domestic",1,"L","OK0140200",35.21318,-97.4377763
 "2020-06-01 05:27:00+00:00","2020-00035996","500 N SHERRY AVE","Suspicious",1,"L","OK0140200",35.225716,-97.46814169999999

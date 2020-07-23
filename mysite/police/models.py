@@ -102,3 +102,11 @@ class Weather(models.Model):
 	wPressureAvg = models.FloatField()
 	wPressureMin = models.FloatField()
 	wPrecipitation = models.FloatField()
+
+class Graphdata(models.Model):
+	bucket_Size = models.IntegerField(default=5)
+	start_Date = models.DateTimeField(default='2020-06-01 00:00:00')
+	end_Date = models.DateTimeField(default='2020-07-09 12:00:00')
+	start_Urgency = models.IntegerField(default=0)
+	end_Urgency = models.IntegerField(default=5)
+
