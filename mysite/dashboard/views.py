@@ -573,48 +573,6 @@ def plot_1_hover(self, points, **event_args):
 def about(request):
 	return render(request, 'dashboard/about.html', {'title': 'About'})
 
-
-def update_gps(request):  # Add GPS point to addresses
-
-	# declaring template
-	template = "dashboard/Gpsdata.html"
-	data = Crime.objects.all()
-	# prompt is a context variable that can have different values depending on their context
-	prompt = {
-		'order': 'GPS Data',
-		'gpsdata': data
-			  }
-	# GET request returns the value of the data with the specified key.
-	if request.method == "GET":
-		return render(request, template, prompt)
-	csv_file = request.FILES['file']
-
-
-	for datarow in data:
-		_, created = Crime.objects.update_or_create(
-			wMonth = column[0],
-			wDay = column[1],
-			wTempMax = column[2],
-			wTempAvg = column[3],
-			wTempMin = column[4],
-			wDewMax = column[5],
-			wDewAvg = column[6],
-			wDewMin = column[7],
-			wHumidityMax = column[8],
-			wHumidityAvg = column[9],
-			wHumidityMin = column[10],
-			wWindMax = column[11],
-			wWindAvg = column[12],
-			wWindMin = column[13],
-			wPressureMax = column[14],
-			wPressureAvg = column[15],
-			wPressureMin = column[16],
-			wPrecipitation = column[17]
-		)
-		#print(io_string)
-	context = {}
-	return render(request, "dashboard/home.html", context)
-
 def mymaps(request):  # GPS heat maps
 
 	# declaring template

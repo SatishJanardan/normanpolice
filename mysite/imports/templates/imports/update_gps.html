@@ -1,0 +1,18 @@
+{% extends "imports/base.html" %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div>
+<!--                | means OR operator-->
+                <strong>{{message|safe}}</strong>
+            </div>
+        {% endfor %}
+    {% else %}
+    {{order}}
+        <div>
+            <h1>Still being implemented</h1>
+        {% csrf_token %}
+        <label for="file1"> Updating GPS Points</label><br>
+        <br><button type="submit">Update GPS</button>
+    {% endif %}
+{% endblock content %}

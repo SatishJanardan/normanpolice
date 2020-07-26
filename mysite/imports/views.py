@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -47,26 +49,28 @@ def csv_weather(request):  # Upload weather data from csv file.
 	io_string = io.StringIO(data_set)
 	next(io_string)
 	for column in csv.reader(io_string, delimiter=',', quotechar='"'):
-		_, created = Weather.objects.update_or_create(
-			wMonth = column[0],
-			wDay = column[1],
-			wTempMax = column[2],
-			wTempAvg = column[3],
-			wTempMin = column[4],
-			wDewMax = column[5],
-			wDewAvg = column[6],
-			wDewMin = column[7],
-			wHumidityMax = column[8],
-			wHumidityAvg = column[9],
-			wHumidityMin = column[10],
-			wWindMax = column[11],
-			wWindAvg = column[12],
-			wWindMin = column[13],
-			wPressureMax = column[14],
-			wPressureAvg = column[15],
-			wPressureMin = column[16],
-			wPrecipitation = column[17]
-		)
+		alist = Weather.objects.filter( wMonth = column[0], wDay = column[1] )  # Only add weather data it it did not exist before
+		if (alist.count() == 0):
+			_, created = Weather.objects.update_or_create(
+				wMonth = column[0],
+				wDay = column[1],
+				wTempMax = column[2],
+				wTempAvg = column[3],
+				wTempMin = column[4],
+				wDewMax = column[5],
+				wDewAvg = column[6],
+				wDewMin = column[7],
+				wHumidityMax = column[8],
+				wHumidityAvg = column[9],
+				wHumidityMin = column[10],
+				wWindMax = column[11],
+				wWindAvg = column[12],
+				wWindMin = column[13],
+				wPressureMax = column[14],
+				wPressureAvg = column[15],
+				wPressureMin = column[16],
+				wPrecipitation = column[17]
+			)
 		#print(io_string)
 	context = {}
 	return render(request, "imports/home.html", context)
@@ -319,5 +323,22 @@ def pdf_norman(request):  # Upload files for norman police department.
 		raise ValidationError(_('THIS FILE HAS BEEN PROCESSED BEFORE'))
 
 	#print(io_string)
+	context = {}
+	return render(request, "imports/home.html", context)
+
+def update_gps(request):  # Upload weather data from csv file.
+
+	# declaring template
+	template = "imports/update_gps.html"
+	data = Crime.objects.all()
+	# prompt is a context variable that can have different values depending on their context
+	prompt = {
+		'order': 'GPS Data',
+		'gpspoints': data
+			  }
+	# No input needed.
+
+	#  Add add login to update all gps pointsin both crime and case tables
+
 	context = {}
 	return render(request, "imports/home.html", context)

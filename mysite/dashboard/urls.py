@@ -5,7 +5,6 @@ from .views import (
     SelectGraphView,
     HeatMapIncView,
     HeatMapCaseView,
-    csv_upload,
     mymaps
 )
 
