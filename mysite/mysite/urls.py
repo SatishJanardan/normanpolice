@@ -33,6 +33,7 @@ urlpatterns = [
     path('incident/', include('incident.urls')),
     path('case/', include('case.urls')),
     path('dashboard/', include('dashboard.urls')),
+    path('imports/', include('imports.urls')),
 ]
 
 if settings.DEBUG:

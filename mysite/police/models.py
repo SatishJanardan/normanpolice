@@ -22,6 +22,10 @@ class Cat(models.Model):
 
 class Crime(models.Model):
 
+	class CaseOptions(models.TextChoices):  # Has this incident results in case being filed.
+		NO = 'N'
+		YES = 'Y'
+
 	crimeDate = models.DateTimeField(default=timezone.now)
 	crimeNumber = models.CharField(max_length=14)
 	crimeLocation = models.CharField(max_length=50)
@@ -29,6 +33,9 @@ class Crime(models.Model):
 	crimeORI = models.CharField(max_length=14)
 	crimeLat = models.FloatField(default=35.221770)
 	crimeLong = models.FloatField(default=-97.444960)
+	crimeCase = models.CharField(max_length=1,choices=CaseOptions.choices,default=CaseOptions.NO)
+	crimeArrest = models.CharField(max_length=1,choices=CaseOptions.choices,default=CaseOptions.NO)
+
 
 	def __str__(self):
 		return self.crimeNumber
@@ -60,6 +67,7 @@ class Arrest(models.Model):
 	arrestOfficerId = models.ForeignKey(Officer, on_delete=models.CASCADE)
 	arrestLat = models.FloatField(default=35.221770)
 	arrestLong = models.FloatField(default=-97.444960)
+	arrestFileDate = models.DateField(default='2020-06-01')
 
 	def __str__(self):
 		return self.arrestNumber
@@ -75,6 +83,7 @@ class Case(models.Model):
 	caseOfficerId = models.ForeignKey(Officer, on_delete=models.CASCADE)
 	caseLat = models.FloatField(default=35.221770)
 	caseLong = models.FloatField(default=-97.444960)
+	caseFileDate = models.DateField(default='2020-06-01')
 
 	def __str__(self):
 		return self.caseNumber

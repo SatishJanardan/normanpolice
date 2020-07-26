@@ -574,53 +574,6 @@ def about(request):
 	return render(request, 'dashboard/about.html', {'title': 'About'})
 
 
-def csv_upload(request):  # Upload weather data from csv file.
-
-	# declaring template
-	template = "dashboard/csv_upload.html"
-	data = Weather.objects.all()
-	# prompt is a context variable that can have different values depending on their context
-	prompt = {
-		'order': 'Weather Data',
-		'weather': data
-			  }
-	# GET request returns the value of the data with the specified key.
-	if request.method == "GET":
-		return render(request, template, prompt)
-	csv_file = request.FILES['file']
-	# let's check if it is a csv file
-	if not csv_file.name.endswith('.csv'):
-		messages.error(request, 'THIS IS NOT A CSV FILE')
-	data_set = csv_file.read().decode('UTF-8')
-	# setup a stream which is when we loop through each line we are able to handle a data in a stream
-	io_string = io.StringIO(data_set)
-	next(io_string)
-	for column in csv.reader(io_string, delimiter=',', quotechar='"'):
-		_, created = Weather.objects.update_or_create(
-			wMonth = column[0],
-			wDay = column[1],
-			wTempMax = column[2],
-			wTempAvg = column[3],
-			wTempMin = column[4],
-			wDewMax = column[5],
-			wDewAvg = column[6],
-			wDewMin = column[7],
-			wHumidityMax = column[8],
-			wHumidityAvg = column[9],
-			wHumidityMin = column[10],
-			wWindMax = column[11],
-			wWindAvg = column[12],
-			wWindMin = column[13],
-			wPressureMax = column[14],
-			wPressureAvg = column[15],
-			wPressureMin = column[16],
-			wPrecipitation = column[17]
-		)
-		#print(io_string)
-	context = {}
-	return render(request, "dashboard/home.html", context)
-
-
 def update_gps(request):  # Add GPS point to addresses
 
 	# declaring template

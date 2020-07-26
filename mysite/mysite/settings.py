@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'incident.apps.IncidentConfig',
     'case.apps.CaseConfig',
     'dashboard.apps.DashboardConfig',
+    'imports.apps.ImportsConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',

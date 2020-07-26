@@ -1,0 +1,23 @@
+{% extends "imports/base.html" %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div>
+<!--                | means OR operator-->
+                <strong>{{message|safe}}</strong>
+            </div>
+        {% endfor %}
+    {% else %}
+    {{order}}
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="file1"> Upload a file</label><br>
+            <input type="file" id="file1" name="file">
+            <br><button type="submit">Upload</button>
+            <small>Only accepts CSV files</small>
+        </form>
+    {% endif %}
+    {% for csvdata in csvdatas %}
+        {{weather.name}}
+    {% endfor %}
+{% endblock content %}
