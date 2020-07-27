@@ -8,26 +8,36 @@ from datetime import datetime
 
 from django.shortcuts import render
 
-found = []
+availtype = ['incident', 'case']  # Do both type of reports
+#availtype = ['case']  # only do cases
+
+# All file in 2020-06 directory
+hreflead = 'https://www.normanok.gov/sites/default/files/documents/2020-06/2020-06-'
+availnum = ['01', '02', '03', '04', '05',  
+					'06', '07', '08', '09', '10',
+					'11', '12', '13', '14', '15',
+					'16', '17', '18', '19', '20',
+					'21', '22', '23', '24', '25'
+					]
+
+# All file in 2020-07 directory
+hreflead = 'https://www.normanok.gov/sites/default/files/documents/2020-07/2020-06-'
+availnum = ['26', '27', '28', '29', '30'
+					]
+
+# All file in 2020-07 directory
 hreflead = 'https://www.normanok.gov/sites/default/files/documents/2020-07/2020-07-'
+availnum = ['01', '02', '03', '04', '05',
+					'06', '07', '08', '09','10',
+					'11', '12', '13', '14', '15',
+					'16', '17', '18', '19', '20',
+					'21', '22' 
+					]
 hrefmid = '_daily_'
 hreftail = '_summary.pdf'
 cstzone=pytz.timezone("America/Chicago")  # Time zone of Norman, OK
 
-availtype = ['incident', 'case']
-availnum = ['01', '02', '03', '04', '05',
-					'06', '07', '08', '09', '10',
-					'11', '12', '13', '14', '15',
-					'16', '17', '18', '19', '20',
-					'21', '22', '23', '24', '25',
-					'26', '27', '28', '29', '30'
-					]
-availnum = ['01', '02', '03', '04', '05',
-					'06', '07', '08', '09'
-					]
-# availnum = ['02','07']
-# availtype = ['case']
-
+found = []
 for filetype in availtype:  #skip  'arrest' files for now
 	for daynum in availnum:
 		href = hreflead + daynum + hrefmid + filetype + hreftail
@@ -47,6 +57,7 @@ for download_url in found:
 	if filelist.count() == 0:
 		filelist = Filelist( fileName = filename )
 		print("Processing file",filename)
+		filedate = filename[0:10]
 		# record this file has been process after processing is complete.
 	else:		#  Skip files that have been already processed
 		print("Skipping:",filename)
@@ -245,7 +256,9 @@ for download_url in found:
 									caseNumber = linerecord[1].strip(),
 									caseLocation = linerecord[2].strip(),
 									caseOffenseId= offenseCat,
-									caseOfficerId = officer )
+									caseOfficerId = officer,
+									caseFileDate = filedate
+									)
 					# print(case.caseDate,case.caseNumber,case.caseLocation,case.caseOffenseId.offenseCat,case.caseOfficerId.officerBadge)
 					case.save()
 

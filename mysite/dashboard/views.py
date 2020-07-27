@@ -119,8 +119,33 @@ def GraphCView(startdate,enddate,starturg,endurg):
 
 	return (title, plot_div)
 
-def GraphDView(startdate,enddate,starturg,endurg):
-	title="Graph D: Incident Type by Urgency (sorted by frequency)"
+def GraphDView(startdate,enddate):
+	title="Graph D: Cases by Type (sorted by frequency)"
+
+	timelist = read_frame(Case.objects.filter(
+		caseDate__range=(startdate,enddate)
+		).values('caseOffenseId__offenseCat').order_by())
+
+	#datcount.append(i['crimeDate'].hour)
+	timelisttemp = timelist['caseOffenseId__offenseCat']
+	x=list(CountFrequency(timelisttemp).items())
+	tltemp = np.array(sorted(x, reverse=True, key=lambda x: x[1]))
+
+	trace = go.Scatter(
+		x=tltemp[0:,0],
+		y=tltemp[0:,1],
+		name='Cases Types', 
+		mode="lines+markers"
+	)
+	data = go.Data([trace])
+
+
+	plot_div = plot(data, output_type='div', show_link=False, include_plotlyjs=False)
+
+	return (title, plot_div)
+
+def GraphEView(startdate,enddate,starturg,endurg):
+	title="Graph E: Incident Type by Urgency (sorted by frequency)"
 
 	timelist = read_frame(Crime.objects.filter(
 		crimeDate__range=(startdate,enddate),
@@ -144,8 +169,8 @@ def GraphDView(startdate,enddate,starturg,endurg):
 
 	return (title, plot_div)
 
-def GraphEView(startdate,enddate,officerbadge):
-	title='Graph E: Cases by Officer (sorted by frequency)'
+def GraphFView(startdate,enddate,officerbadge):
+	title='Graph F: Cases by Officer (sorted by frequency)'
 
 	if officerbadge == '':
 		timelist = read_frame(Case.objects.filter(
@@ -173,8 +198,8 @@ def GraphEView(startdate,enddate,officerbadge):
 
 	return (title, plot_div)
 
-def GraphFView(startdate,enddate,starturg,endurg):
-	title='Graph F: Incidents count vs Weather'
+def GraphGView(startdate,enddate,starturg,endurg):
+	title='Graph G: Incidents count vs Weather'
 
 	timelist = read_frame(Crime.objects.filter(
 		crimeDate__range=(startdate,enddate),
@@ -219,8 +244,8 @@ def GraphFView(startdate,enddate,starturg,endurg):
 
 	return (title, plot_div)
 
-def GraphF2View(startdate,enddate):
-	title='Graph G: Case count vs Weather'
+def GraphHView(startdate,enddate):
+	title='Graph H: Case count vs Weather'
 
 	timelist = read_frame(Case.objects.filter(
 		caseDate__range=(startdate,enddate),
@@ -264,8 +289,8 @@ def GraphF2View(startdate,enddate):
 
 	return (title, plot_div)
 
-def GraphGView(startdate,enddate,starturg,endurg):
-	title = 'Graph H: Weekly Incidents (starting Monday)'
+def GraphIView(startdate,enddate,starturg,endurg):
+	title = 'Graph I: Weekly Incidents (starting Monday)'
 
 	timelist = read_frame(Crime.objects.filter(
 		crimeDate__range=(startdate,enddate),
@@ -295,8 +320,8 @@ def GraphGView(startdate,enddate,starturg,endurg):
 
 	return (title, plot_div)
 
-def GraphHView(startdate,enddate):
-	title = 'Graph I: Top offenses worked by top five officiers'
+def GraphJView(startdate,enddate):
+	title = 'Graph J: Top offenses worked by top five officiers'
 	topofficers = ['Martinez','Jackson','Burk','Allison','Caspers']
 
 	topofficer = topofficers[0]
@@ -364,8 +389,34 @@ def GraphHView(startdate,enddate):
 
 	return (title, plot_div)
 
-def GraphIView(startdate,enddate,starturg,endurg):
-	title = 'Graph J: Heat Map of Incidents'
+def GraphKView(startdate,enddate):
+	title = 'Graph K: Processing Lag by Officier'
+
+	timelist = read_frame(Case.objects.filter(
+		caseDate__range=(startdate,enddate)).values('caseDate','caseFileDate').order_by())
+
+	timelisttemp = sorted(((pd.to_datetime(timelist['caseFileDate']).dt.month-6)*30+pd.to_datetime(timelist['caseFileDate']).dt.day)-
+					((timelist['caseDate'].dt.month-6)*30+timelist['caseDate'].dt.day)
+					)
+	tltemp = np.array(list(CountFrequency(timelisttemp).items()))
+
+	trace = go.Scatter(
+		x=tltemp[0:,0],
+		y=tltemp[0:,1],
+		name='Case Filing Lags',
+		mode="lines+markers"
+	)
+	data = go.Data([trace])
+	labels="{'Minutes','Frequency'}"
+
+	# Plot and embed in ipython notebook!
+	#plotly.offline.iplot(data, filename='basic-plot')
+	plot_div = plot(data, output_type='div', show_link=False, include_plotlyjs=False)
+
+	return (title, plot_div)
+
+def MapAView(startdate,enddate,starturg,endurg):
+	title = 'Map A: Heat Map of Incidents'
 
 	starturg=3
 	endurg=5
@@ -390,8 +441,8 @@ def GraphIView(startdate,enddate,starturg,endurg):
 
 	return ('')
 
-def GraphJView(startdate,enddate):
-	title = 'Graph K: Heat Map of Cases'
+def MapBView(startdate,enddate):
+	title = 'Map B: Heat Map of Cases'
 
 	timelist = read_frame(Case.objects.filter(
 		caseDate__range=(startdate,enddate)
@@ -504,23 +555,18 @@ def home(request):
 	plots.append(plot_div)
 	plotcnt+=1
 
-	(title, plot_div) = GraphDView(startdate,enddate,starturg,endurg)
+	(title, plot_div) = GraphDView(startdate,enddate)
+	titles.append(title)
+	plots.append(plot_div)
+	plotcnt+=1
+
+	(title, plot_div) = GraphEView(startdate,enddate,starturg,endurg)
 	titles.append(title)
 	plots.append(plot_div)
 	plotcnt+=1
 
 	officerbadge = ''
-	(title, plot_div) = GraphEView(startdate,enddate,officerbadge)
-	titles.append(title)
-	plots.append(plot_div)
-	plotcnt+=1
-
-	(title, plot_div) = GraphFView(startdate,enddate,starturg,endurg)
-	titles.append(title)
-	plots.append(plot_div)
-	plotcnt+=1
-
-	(title, plot_div) = GraphF2View(startdate,enddate)
+	(title, plot_div) = GraphFView(startdate,enddate,officerbadge)
 	titles.append(title)
 	plots.append(plot_div)
 	plotcnt+=1
@@ -535,9 +581,25 @@ def home(request):
 	plots.append(plot_div)
 	plotcnt+=1
 
-	GraphIView(startdate,enddate,starturg,endurg)  #displayed in its own page
+	(title, plot_div) = GraphIView(startdate,enddate,starturg,endurg)
+	titles.append(title)
+	plots.append(plot_div)
+	plotcnt+=1
 
-	GraphJView(startdate,enddate)  #displayed in its own page
+	(title, plot_div) = GraphJView(startdate,enddate)
+	titles.append(title)
+	plots.append(plot_div)
+	plotcnt+=1
+
+	(title, plot_div) = GraphKView(startdate,enddate)
+	titles.append(title)
+	plots.append(plot_div)
+	plotcnt+=1
+
+
+	MapAView(startdate,enddate,starturg,endurg)  #displayed in its own page
+
+	MapBView(startdate,enddate)  #displayed in its own page
 
 	mylist=zip(titles,plots)
 	context = {
