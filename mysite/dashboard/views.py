@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.db.models import Avg, Count, Min, Sum
 from plotly.offline import plot
 import csv, io, datetime
-import plotly.express as px
+#import plotly.express as px
 import plotly.graph_objs as go
 import pandas as pd
 import numpy as np
@@ -56,11 +56,14 @@ def GraphAView(startdate,enddate,starturg,endurg,bucketsize):
 	trace = go.Scatter(
 		x=tltemp[0:,0],
 		y=tltemp[0:,1],
-		name='Incidents', 
+		name='Incidents',
+		marker_color="DarkSlateBlue",
+		#xaxis="Minutes in a Day", 
 		mode="lines+markers"
 	)
 
 	data = go.Data([trace])
+	#data.update_layout(title_text=title)
 	labels="{'Minutes','Frequency'}"
 
 	# Plot and embed in ipython notebook!
@@ -81,6 +84,7 @@ def GraphBView(startdate,enddate,bucketsize):
 	trace = go.Scatter(
 		x=tltemp[0:,0],
 		y=tltemp[0:,1],
+		marker_color="DarkSlateBlue",
 		name='Cases',
 		mode="lines+markers"
 	)
@@ -109,6 +113,7 @@ def GraphCView(startdate,enddate,starturg,endurg):
 	trace = go.Scatter(
 		x=tltemp[0:,0],
 		y=tltemp[0:,1],
+		marker_color="DarkSlateBlue",
 		name='Incidents', 
 		mode="lines+markers"
 	)
@@ -134,6 +139,7 @@ def GraphDView(startdate,enddate):
 	trace = go.Scatter(
 		x=tltemp[0:,0],
 		y=tltemp[0:,1],
+		marker_color="DarkSlateBlue",
 		name='Cases Types', 
 		mode="lines+markers"
 	)
@@ -160,6 +166,7 @@ def GraphEView(startdate,enddate,starturg,endurg):
 	trace = go.Scatter(
 		x=tltemp[0:,0],
 		y=tltemp[0:,1],
+		marker_color="DarkSlateBlue",
 		name='Severity', 
 		mode="lines+markers"
 	)
@@ -189,6 +196,7 @@ def GraphFView(startdate,enddate,officerbadge):
 	trace = go.Scatter(
 		x=tltemp[0:,0],
 		y=tltemp[0:,1],
+		marker_color="DarkSlateBlue",
 		name='Severity', 
 		mode="lines+markers"
 	)
@@ -380,6 +388,7 @@ def GraphJView(startdate,enddate):
 	trace = go.Scatter(
 		x=tltemp[0:,0],
 		y=tltemp[0:,1],
+		marker_color="DarkSlateBlue",
 		name='Offense', 
 		mode="lines+markers"
 	)
@@ -403,6 +412,7 @@ def GraphKView(startdate,enddate):
 	trace = go.Scatter(
 		x=tltemp[0:,0],
 		y=tltemp[0:,1],
+		marker_color="DarkSlateBlue",
 		name='Case Filing Lags',
 		mode="lines+markers"
 	)
